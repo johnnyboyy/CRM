@@ -20,6 +20,10 @@ class CRM
   end
 
   def call_option(user_input)
+  	all_ids = Database.contacts.each do |c|
+  		c.id
+  	end
+
   	case user_input
 		when "add contact"
 			puts "\n\n\n"
@@ -27,23 +31,44 @@ class CRM
 		when "modify"
 			puts "\n\n\n"
 			puts 'Please enter the id of the contact you wish to modify.'
+			puts "IDs = "
+				all_ids.each do |i|
+				 puts i.id
+			end
 			id_to_modify = gets.chomp
-			puts 'Is this the correct contact? (YES / NO)'
-			puts Database.search_by_id(id_to_modify).describe
-			decision_for_modify = gets.chomp
-			if "YES" == decision_for_modify.upcase
-				Database.modify_contact_by_id(id_to_modify)
+			if all_ids.select { |i| i.id == id_to_modify} == []
+				puts "\n\nInvalid ID\n\n"
+			else
+				puts 'Is this the correct contact? (YES / NO)'
+				
+				puts Database.search_by_id(id_to_modify).describe
+				decision_for_modify = gets.chomp
+				if "YES" == decision_for_modify.upcase
+					Database.modify_contact_by_id(id_to_modify)
+				else
+					puts "Modify has been canceled"
+				end
 			end
 		when "delete"
 			puts "\n\n\n"
 			puts "please enter the id of the contact you wish to delete"
+			puts "IDs = "
+			all_ids.each do |i|
+			 puts i.id
+			end
 			id_to_delete = gets.chomp
-			Database.search_by_id(id_to_delete).describe
-			puts "Are you sure you want to delete this contact? (YES / NO)"
-			decision_for_delete = gets.chomp
-			 if "YES" == decision_for_delete.upcase
-				Database.delete_contact_by_id(id_to_delete)
-				puts "Contact succesfully deleted."
+			if all_ids.select { |i| i.id == id_to_delete} == []
+				puts "\n\nInvalid ID\n\n"
+			else
+				Database.search_by_id(id_to_delete).describe
+				puts "Are you sure you want to delete this contact? (YES / NO)"
+				decision_for_delete = gets.chomp
+				 if "YES" == decision_for_delete.upcase
+					Database.delete_contact_by_id(id_to_delete)
+					puts "Contact succesfully deleted."
+				else
+					puts "Delete has been canceled"
+				end
 			end
 		when "display all"
 			puts "\n\n\n"

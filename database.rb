@@ -1,4 +1,4 @@
-
+require './contact'
 
 class Database
   @contacts = []
