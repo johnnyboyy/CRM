@@ -38,6 +38,7 @@ class Database
 
         fields.merge(id_hash)
       end
+
     return fields
   end
 
@@ -46,11 +47,7 @@ class Database
   end
 
   def self.delete_contact_by_id(id)
-    if self.contacts.length == 0
-      puts "ERROR no contacts in databse"
-    else
-      @contacts.delete_if { |c| id == c.id }
-    end
+    @contacts.delete_if { |c| id == c.id }
     self.contacts
   end
 
@@ -63,22 +60,26 @@ class Database
   end
 
   def self.display_attribute(atr)
-    # @contacts.each do |c|
-      # case atr
-      # when "firstname"
-      #   return c.first_name
-      # when "lastname"
-      #   return c.last_name
-      # when "email"
-      #   return c.email
-      # when "notes"
-      #   return c.notes
-      # when "id"
-      #   return c.id
-      # else
-      #   puts "no attribute matches the name #{atr}"
-      # end 
-    # end
+    attribute = []
+
+    @contacts.each do |c|
+      case atr
+      when "firstname"
+        attribute << c.first_name
+      when "lastname"
+        attribute << c.last_name
+      when "email"
+        attribute << c.email
+      when "notes"
+        attribute << c.notes
+      when "id"
+        attribute << c.id
+      else
+        attribute << "no attribute matches the name #{atr}"
+      end 
+
+    end
+    return attribute
   end
 
   def self.modify_contact_by_id(id)
