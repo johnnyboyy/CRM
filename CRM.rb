@@ -10,8 +10,7 @@ class CRM
   end
 
   def print_main_menu
-	puts
-  	puts
+	puts "\n\n\n\n\n"
    	puts "Please pick an option:"
 	puts
 	puts "add contact, delete, modify, display all, display attribute, exit"
@@ -20,9 +19,10 @@ class CRM
   end
 
   def call_option(user_input)
-  	all_ids = Database.contacts.each do |c|
-  		c.id
-  	end
+
+	all_ids = Database.contacts.each do |c|
+		c.id
+	end
 
   	case user_input
 		when "add contact"
@@ -32,9 +32,11 @@ class CRM
 			puts "\n\n\n"
 			puts 'Please enter the id of the contact you wish to modify.'
 			puts "IDs = "
-				all_ids.each do |i|
+
+			all_ids.each do |i|
 				 puts i.id
 			end
+			
 			id_to_modify = gets.chomp
 			if all_ids.select { |i| i.id == id_to_modify} == []
 				puts "\n\nInvalid ID\n\n"

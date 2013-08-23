@@ -5,6 +5,17 @@ class Database
   @@id = 1
 
   def self.add_contact
+    
+    contact = Contact.new(self.get_fields)
+
+    contact.id = "PERSON " + @@id.to_s
+    puts contact.id
+    @contacts << contact
+    @@id += 1
+  end
+
+  def self.get_fields(*optional_id)
+
     print "Enter First Name: "
     first_name = gets.chomp
     print "Enter Last Name: "
@@ -12,12 +23,22 @@ class Database
     print "Enter Email Address: "
     email = gets.chomp
     print "Enter a Note: "
-    note = gets.chomp
-    contact = Contact.new(first_name, last_name, email, note)
+    notes = gets.chomp
 
-    contact.id = "PERSON " + @@id.to_s
-    @contacts << contact
-    @@id += 1
+    fields = {input_firstname: first_name,
+              input_lastname: last_name,
+              input_email: email,
+              input_notes: notes
+             }
+
+      if optional_id == true
+        puts "Enter ID:"
+        id = gets.chomp
+        id_hash = {new_id: id }
+
+        fields.merge(id_hash)
+      end
+    return fields
   end
 
   def self.contacts
@@ -63,19 +84,14 @@ class Database
   def self.modify_contact_by_id(id)
     contact_to_modify = search_by_id(id)
 
-    puts "new first name?"
-    contact_to_modify.first_name = gets.chomp
-    puts "new last name?"
-    contact_to_modify.last_name = gets.chomp
-    puts "new email?"
-    contact_to_modify.email = gets.chomp
-    puts "new notes?"
-    contact_to_modify.notes = gets.chomp
-    puts "new id?"
-    contact_to_modify.id = gets.chomp
+    need_id = true
+    new_fields = self.get_fields(need_id)
+    contact_to_modify
+
+    contact_to_modify.first_name = new_fields[:input_firstname]
+    contact_to_modify.last_name = new_fields[:input_lastname]
+    contact_to_modify.email = new_fields[:input_email]
+    contact_to_modify.notes = new_fields[:input_notes]
   end
-
-  
-
 
 end
